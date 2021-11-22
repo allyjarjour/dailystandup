@@ -5,43 +5,27 @@ import Link from "next/link";
 const Nav = () => (
   <header
     sx={{
-      height: "60px",
       width: "100vw",
-      bg: "primary",
+      bg: "secondary",
       borderBottom: "1px solid",
-      borderColor: "primary",
+      borderColor: "secondary",
     }}
   >
-    <nav
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        variant: "containers.page",
-        height: "100%",
-      }}
-    >
-      <Link href="/">
-        <a sx={{ fontWeight: "bold", fontSize: 4, cursor: "pointer" }}>
-          Note App
-        </a>
-      </Link>
-
-      <Link href="/notes">
-        <a sx={{ color: "text", fontSize: 3, cursor: "pointer" }}>notes</a>
-      </Link>
-
-      <a
+    <Link href="/">
+      <nav
         sx={{
-          color: "text",
-          fontSize: 3,
-          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          height: "100%",
+          color: "muted",
+          fontSize: "2rem",
         }}
-        href={process.env.HELP_APP_URL}
       >
-        Help
-      </a>
-    </nav>
+        Daily Standup
+      </nav>
+    </Link>
   </header>
 );
 
