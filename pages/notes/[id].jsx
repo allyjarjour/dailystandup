@@ -1,32 +1,75 @@
 /** @jsx jsx */
-import { jsx } from "theme-ui";
+import { jsx, Button, Input } from "theme-ui";
+import { useRouter } from "next/router";
+import { deleteNote, updateTasks, getNote } from "../../src/requests/requests";
+import SummaryTasks from "../../src/components/SummaryTasks";
+import { formatNoteTitle } from "../../src/util";
 
-export default ({ note }) => {
+export default function Note() {
+  const router = useRouter();
+  const [note, setNote] = React.useState({ title: "", tasks: [], _id: "" });
+  const [value, setValue] = React.useState("");
+  const noteTitle = note.title && formatNoteTitle(note.title);
+  const { tasks } = note;
+
+  const refreshNote = async () => {
+    const {
+      query: { id },
+    } = router;
+    const data = await getNote(id);
+    setNote(data);
+  };
+
+  React.useEffect(() => {
+    refreshNote();
+  }, []);
+
+  const handleDelete = () => {
+    const onSuccess = () => router.push("/");
+    deleteNote(note._id, onSuccess);
+  };
+
+  const handleAddTask = () => {
+    updateTasks([...tasks, value], note._id, refreshNote);
+    setValue("");
+  };
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+  };
+
   return (
     <div sx={{ variant: "containers.page" }}>
-      <h1>Note: {note.title} </h1>
+      <div sx={{ variant: "containers.note" }}>
+        <div sx={{ variant: "containers.card", mt: 20, p: 30 }}>
+          <h1>{noteTitle} </h1>
+          <div sx={{ display: "flex", mb: "20px" }}>
+            <Input
+              onChange={handleChange}
+              value={value}
+              sx={{ fontFamily: "inherit" }}
+            />
+            <Button sx={{ ml: "5px" }} onClick={handleAddTask}>
+              +
+            </Button>
+          </div>
+          {tasks && (
+            <SummaryTasks
+              tasks={tasks}
+              noteId={note._id}
+              refreshNote={refreshNote}
+            />
+          )}
+          <Button onClick={handleDelete}>Delete Note</Button>
+        </div>
+      </div>
     </div>
   );
-};
+}
 
-export const getServerSideProps = async ({ params, req, res }) => {
-  const response = await fetch(`${process.env.API_URL}/api/note/${params.id}`);
-
-  if (!response.ok) {
-    res.writeHead(302, {
-      Location: "/notes",
-    });
-
-    res.end();
-
-    return {
-      props: {},
-    };
-  }
-
-  const { data } = await response.json();
-
+export const getServerSideProps = async ({ params }) => {
+  const note = await getNote(params.id);
   return {
-    props: { note: data },
+    props: { note: note ?? {} },
   };
 };
