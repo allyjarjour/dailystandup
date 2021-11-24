@@ -1,7 +1,21 @@
-import { roboto } from "@theme-ui/presets";
+import { future } from "@theme-ui/presets";
 
 const theme = {
-  ...roboto,
+  ...future,
+  buttons: {
+    primary: {
+      bg: "primary",
+      color: "muted",
+      fontFamily: "inherit",
+      fontWeight: "bold",
+    },
+    skeleton: {
+      bg: "muted",
+      color: "primary",
+      fontFamily: "inherit",
+      fontWeight: "bold",
+    },
+  },
   containers: {
     card: {
       boxShadow: "0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)",
@@ -11,14 +25,20 @@ const theme = {
       p: 2,
     },
     page: {
-      width: "100%",
-      maxWidth: "960px",
-      m: 0,
+      width: "80%",
       mx: "auto",
+    },
+    note: {
+      display: "flex",
+      m: "auto",
+      width: "100%",
+      maxWidth: "600px",
+      justifyContent: "center",
+      flexDirection: "column",
     },
   },
   styles: {
-    ...roboto.styles,
+    ...future.styles,
   },
 };
 
