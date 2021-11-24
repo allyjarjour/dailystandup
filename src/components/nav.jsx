@@ -23,7 +23,7 @@ const Nav = () => (
           fontSize: "2rem",
         }}
       >
-        Daily Standup
+        Standup Summary
       </nav>
     </Link>
   </header>
