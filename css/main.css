@@ -3,3 +3,8 @@
 .daily-standup-app {
   font-family: "Source Code Pro", monospace;
 }
+
+.date-picker {
+  height: 43px;
+  font-family: inherit;
+}
