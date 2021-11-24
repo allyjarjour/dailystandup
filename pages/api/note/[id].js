@@ -1,48 +1,37 @@
+import { ObjectId } from "bson";
 import nc from "next-connect";
-import notes from "../../../src/data/data";
+import middleware from "../../../middleware/database";
 
-const getNote = (id) => notes.find((n) => n.id === parseInt(id));
+const handler = nc();
 
-const handler = nc()
-  .get((req, res) => {
-    const note = getNote(req.query.id);
+handler.use(middleware);
 
-    if (!note) {
-      res.status(404);
-      res.end();
-      return;
+handler
+  .get(async (req, res) => {
+    const {
+      query: { id },
+    } = req;
+    try {
+      let doc = await req.db
+        .collection("allNotes")
+        .findOne({ _id: ObjectId(id) });
+      res.json({ data: doc });
+    } catch (e) {
+      res.status(500).json({ message: e.message });
     }
-
-    res.json({ data: note });
   })
-  .patch((req, res) => {
-    const note = getNote(req.query.id);
-
-    if (!note) {
+  .delete(async (req, res) => {
+    const {
+      query: { id },
+    } = req;
+    try {
+      await req.db.collection("allNotes").remove({ _id: ObjectId(id) });
+      res.json({ data: id });
+    } catch (e) {
       res.status(404);
       res.end();
       return;
     }
-
-    const i = notes.findIndex((n) => n.id === parseInt(req.query.id));
-    const updated = { ...note, ...req.body };
-
-    notes[i] = updated;
-    res.json({ data: updated });
-  })
-  .delete((req, res) => {
-    const note = getNote(req.query.id);
-
-    if (!note) {
-      res.status(404);
-      res.end();
-      return;
-    }
-    const i = notes.findIndex((n) => n.id === parseInt(req.query.id));
-
-    notes.splice(i, 1);
-
-    res.json({ data: req.query.id });
   });
 
 export default handler;
