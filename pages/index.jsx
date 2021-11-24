@@ -5,7 +5,7 @@ import { getNotes, submitNote } from "../src/requests/requests";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useRouter } from "next/router";
-import { formatNoteTitle } from "../src/util";
+import { formatNoteTitle, sortNotesByDateTitle } from "../src/util";
 import { isMobile } from "react-device-detect";
 
 const Notes = () => {
@@ -69,7 +69,7 @@ const Notes = () => {
           }}
         >
           {notes.length > 0 ? (
-            notes.map((note, i) => {
+            sortNotesByDateTitle(notes).map((note, i) => {
               return (
                 <div sx={{ width: isMobile ? "100%" : "33%", p: 2 }} key={i}>
                   <Link
