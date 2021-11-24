@@ -1,29 +1,101 @@
 /** @jsx jsx */
-import { jsx } from "theme-ui";
+import { jsx, Button, Spinner } from "theme-ui";
+import Link from "next/link";
+import { getNotes, submitNote } from "../src/requests/requests";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { useRouter } from "next/router";
+import { formatNoteTitle } from "../src/util";
+import { isMobile } from "react-device-detect";
 
-export default ({ content }) => (
-  <div sx={{ height: `calc(100vh - 60px)` }}>
-    <div
-      sx={{
-        variant: "containers.page",
-        display: "flex",
-        alignItems: "center",
-        height: "100%",
-      }}
-    >
-      <h1 sx={{ fontSize: 6, my: 0 }}>{content.title}</h1>
-    </div>
-  </div>
-);
+const Notes = () => {
+  const [value, setValue] = React.useState("");
+  const [notes, setNotes] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const router = useRouter();
 
-export const getStaticProps = () => {
-  // get data from CMS
-
-  return {
-    props: {
-      content: {
-        title: "This is my really nice app",
-      },
-    },
+  const refreshNotes = async () => {
+    setIsLoading(true);
+    const { notes: data } = await getNotes();
+    setNotes(() => {
+      setIsLoading(false);
+      return data;
+    });
   };
+
+  React.useEffect(() => {
+    refreshNotes();
+  }, []);
+
+  const onChange = (e) => {
+    setValue(e);
+  };
+
+  const onSubmit = async () => {
+    const onSuccess = (id) => {
+      router.push(`notes/${id}`);
+    };
+    submitNote(value, onSuccess);
+  };
+
+  return (
+    <div sx={{ variant: "containers.page" }}>
+      <div
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          m: "20px",
+        }}
+      >
+        <Button onClick={onSubmit}>+</Button>
+        <div sx={{ ml: "5px" }}>
+          <DatePicker
+            className="date-picker"
+            selected={value}
+            onChange={onChange}
+          />
+        </div>
+      </div>
+      {isLoading ? (
+        <Spinner sx={{ width: "100%", mt: "2rem" }} />
+      ) : (
+        <div
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+          }}
+        >
+          {notes.length > 0 ? (
+            notes.map((note, i) => {
+              return (
+                <div sx={{ width: isMobile ? "100%" : "33%", p: 2 }} key={i}>
+                  <Link
+                    key={note._id}
+                    href="/notes/[id]"
+                    as={`/notes/${note._id}`}
+                  >
+                    <div sx={{ variant: "containers.card" }}>
+                      <strong>{formatNoteTitle(note.title)}</strong>
+                    </div>
+                  </Link>
+                </div>
+              );
+            })
+          ) : (
+            <div
+              sx={{ textAlign: "center", width: "100%", fontStyle: "italic" }}
+            >
+              {" "}
+              No notes
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
 };
+
+export default Notes;
