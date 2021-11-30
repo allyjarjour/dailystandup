@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import "../css/main.css";
+import "react-datepicker/dist/react-datepicker.css";
 import { jsx } from "theme-ui";
 import { ThemeProvider } from "theme-ui";
 import theme from "../theme";

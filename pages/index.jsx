@@ -3,7 +3,6 @@ import { jsx, Button, Spinner } from "theme-ui";
 import Link from "next/link";
 import { getNotes, submitNote } from "../src/requests/requests";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { useRouter } from "next/router";
 import { formatNoteTitle, sortNotesByDateTitle } from "../src/util";
 import { isMobile } from "react-device-detect";
