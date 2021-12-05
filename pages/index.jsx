@@ -47,7 +47,9 @@ const Notes = () => {
           m: "20px",
         }}
       >
-        <Button onClick={onSubmit}>+</Button>
+        <Button disabled={!value} onClick={onSubmit}>
+          +
+        </Button>
         <div sx={{ ml: "5px" }}>
           <DatePicker
             className="date-picker"
