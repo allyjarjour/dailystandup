@@ -12,7 +12,10 @@ export default function App({ Component, pageProps }) {
     <ThemeProvider theme={theme}>
       <Head>
         <title>Standup Summary</title>
-        <link rel="shortcut icon" href="pencil.png" />
+        <link
+          rel="shortcut icon"
+          href="https://static.thenounproject.com/png/79533-200.png"
+        />
       </Head>
       <div className="daily-standup-app">
         <Nav />
