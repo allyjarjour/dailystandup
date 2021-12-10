@@ -44,11 +44,7 @@ export default function Note() {
         <div sx={{ variant: "containers.card", mt: 20, p: 30 }}>
           <h1>{noteTitle} </h1>
           <div sx={{ display: "flex", mb: "20px" }}>
-            <Input
-              onChange={handleChange}
-              value={value}
-              sx={{ fontFamily: "inherit" }}
-            />
+            <Input onChange={handleChange} value={value} />
             <Button sx={{ ml: "5px" }} onClick={handleAddTask}>
               +
             </Button>

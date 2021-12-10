@@ -9,12 +9,25 @@ const theme = {
       fontFamily: "inherit",
       fontWeight: "bold",
       cursor: "pointer",
+      "&:hover": {
+        bg: "#1155ed",
+      },
     },
     skeleton: {
-      bg: "muted",
-      color: "primary",
+      bg: "#FFFFFF",
+      color: "secondary",
       fontFamily: "inherit",
       fontWeight: "bold",
+      border: "1px solid #c0c",
+      "&:hover": {
+        bg: "highlight",
+        color: "muted",
+      },
+    },
+  },
+  forms: {
+    input: {
+      fontFamily: "inherit",
     },
   },
   nav: {

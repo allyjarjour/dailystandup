@@ -1,7 +1,5 @@
-/** @jsx jsx */
-import { Button, Flex } from "@theme-ui/components";
-import { jsx } from "theme-ui";
 import { updateTasks } from "../requests/requests";
+import SummaryTask from "./SummaryTask";
 
 const SummaryTasks = ({ tasks, noteId, refreshNote }) => {
   const handleDelete = (i) => {
@@ -10,20 +8,27 @@ const SummaryTasks = ({ tasks, noteId, refreshNote }) => {
     updateTasks(tasksToSave, noteId, refreshNote);
   };
 
+  const handleEdit = (i, newTask, onSuccess) => {
+    const tasksToSave = [...tasks];
+    tasksToSave[i] = newTask;
+    const onSuccessEvents = () => {
+      refreshNote();
+      typeof onSuccess === "function" && onSuccess();
+    };
+    updateTasks(tasksToSave, noteId, onSuccessEvents);
+  };
+
   return (
-    <ul sx={{ listStyleType: "none", paddingLeft: 0 }}>
+    <ul style={{ listStyleType: "none", paddingLeft: 0 }}>
       {tasks.map((t, i) => (
-        <Flex key={i} sx={{ width: "100%", justifyContent: "space-between" }}>
-          <li>{t}</li>
-          <div sx={{ display: "flex", alignItems: "center" }}>
-            <Button
-              sx={{ borderRadius: "50%", variant: "buttons.skeleton" }}
-              onClick={handleDelete}
-            >
-              -
-            </Button>
-          </div>
-        </Flex>
+        <li key={i}>
+          <SummaryTask
+            task={t}
+            id={i}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+          />
+        </li>
       ))}
     </ul>
   );
