@@ -12,19 +12,7 @@ const Nav = () => (
     }}
   >
     <Link href="/">
-      <nav
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          textAlign: "center",
-          height: "100%",
-          color: "muted",
-          fontSize: "2rem",
-        }}
-      >
-        Standup Summary
-      </nav>
+      <nav sx={{ variant: "nav" }}>Daily Standup</nav>
     </Link>
   </header>
 );

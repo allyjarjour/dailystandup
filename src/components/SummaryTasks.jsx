@@ -15,12 +15,14 @@ const SummaryTasks = ({ tasks, noteId, refreshNote }) => {
       {tasks.map((t, i) => (
         <Flex key={i} sx={{ width: "100%", justifyContent: "space-between" }}>
           <li>{t}</li>
-          <Button
-            sx={{ borderRadius: "50%", variant: "buttons.skeleton" }}
-            onClick={handleDelete}
-          >
-            -
-          </Button>
+          <div sx={{ display: "flex", alignItems: "center" }}>
+            <Button
+              sx={{ borderRadius: "50%", variant: "buttons.skeleton" }}
+              onClick={handleDelete}
+            >
+              -
+            </Button>
+          </div>
         </Flex>
       ))}
     </ul>

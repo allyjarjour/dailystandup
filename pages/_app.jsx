@@ -11,7 +11,7 @@ export default function App({ Component, pageProps }) {
   return (
     <ThemeProvider theme={theme}>
       <Head>
-        <title>Standup Summary</title>
+        <title>Daily Standup</title>
         <link
           rel="shortcut icon"
           href="https://static.thenounproject.com/png/79533-200.png"

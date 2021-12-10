@@ -78,7 +78,7 @@ const Notes = () => {
                     href="/notes/[id]"
                     as={`/notes/${note._id}`}
                   >
-                    <div sx={{ variant: "containers.card" }}>
+                    <div sx={{ variant: "containers.card", cursor: "pointer" }}>
                       <strong>{formatNoteTitle(note.title)}</strong>
                     </div>
                   </Link>

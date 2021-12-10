@@ -8,6 +8,7 @@ const theme = {
       color: "muted",
       fontFamily: "inherit",
       fontWeight: "bold",
+      cursor: "pointer",
     },
     skeleton: {
       bg: "muted",
@@ -15,6 +16,16 @@ const theme = {
       fontFamily: "inherit",
       fontWeight: "bold",
     },
+  },
+  nav: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center",
+    height: "100%",
+    color: "muted",
+    fontSize: "2rem",
+    cursor: "pointer",
   },
   containers: {
     card: {
