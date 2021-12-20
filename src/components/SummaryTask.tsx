@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Input, Flex } from "theme-ui";
+import { Button, Input, Flex, Box, IconButton } from "theme-ui";
 
 type SummaryTaskProps = {
   task: string;
@@ -30,15 +30,22 @@ const SummaryTask = ({
   };
 
   return (
-    <Flex key={task} sx={{ width: "100%", justifyContent: "space-between" }}>
+    <Flex
+      key={task}
+      sx={{
+        width: "100%",
+        alignItems: "center",
+        justifyContent: "space-between",
+        flexDirection: ["column", "row", "row"],
+      }}
+    >
       {isEditing ? (
         <Input value={newTask} onChange={onInputChange} />
       ) : (
         <p>{task}</p>
       )}
-      <div style={{ display: "flex", alignItems: "center" }}>
+      <Flex sx={{ alignItems: "center", minWidth: 175 }} mb={["20px", 0, 0]}>
         <Button
-          ml={2}
           sx={{ variant: "buttons.skeleton" }}
           onClick={onEditOrSaveClick}
         >
@@ -51,7 +58,7 @@ const SummaryTask = ({
         >
           Delete
         </Button>
-      </div>
+      </Flex>
     </Flex>
   );
 };
