@@ -6,12 +6,16 @@ import DatePicker from "react-datepicker";
 import { useRouter } from "next/router";
 import { formatNoteTitle, sortNotesByDateTitle } from "../src/util";
 import { isMobile } from "react-device-detect";
+import { useSession } from "next-auth/react";
+import MustBeLoggedIn from "../src/components/MustBeLoggedInMessage";
 
 const Notes = () => {
   const [value, setValue] = React.useState("");
   const [notes, setNotes] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
   const router = useRouter();
+  const { status } = useSession();
+  const isLoggedIn = status === "authenticated";
 
   const refreshNotes = async () => {
     setIsLoading(true);
@@ -32,68 +36,83 @@ const Notes = () => {
 
   const onSubmit = async () => {
     const onSuccess = (id) => {
-      router.push(`notes/${id}`);
+      router.push(`note/${id}`);
     };
     submitNote(value, onSuccess);
   };
 
   return (
     <div sx={{ variant: "containers.page" }}>
-      <div
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          m: "20px",
-        }}
-      >
-        <Button disabled={!value} onClick={onSubmit}>
-          +
-        </Button>
-        <div sx={{ ml: "5px" }}>
-          <DatePicker
-            className="date-picker"
-            selected={value}
-            onChange={onChange}
-          />
-        </div>
-      </div>
-      {isLoading ? (
-        <Spinner sx={{ width: "100%", mt: "2rem" }} />
-      ) : (
-        <div
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            flexWrap: "wrap",
-          }}
-        >
-          {notes.length > 0 ? (
-            sortNotesByDateTitle(notes).map((note, i) => {
-              return (
-                <div sx={{ width: isMobile ? "100%" : "33%", p: 2 }} key={i}>
-                  <Link
-                    key={note._id}
-                    href="/notes/[id]"
-                    as={`/notes/${note._id}`}
-                  >
-                    <div sx={{ variant: "containers.card", cursor: "pointer" }}>
-                      <strong>{formatNoteTitle(note.title)}</strong>
-                    </div>
-                  </Link>
-                </div>
-              );
-            })
+      {isLoggedIn ? (
+        <>
+          <div
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              m: "20px",
+            }}
+          >
+            <Button disabled={!value} onClick={onSubmit}>
+              +
+            </Button>
+            <div sx={{ ml: "5px" }}>
+              <DatePicker
+                className="date-picker"
+                selected={value}
+                onChange={onChange}
+              />
+            </div>
+          </div>
+          {isLoading ? (
+            <Spinner sx={{ width: "100%", mt: "2rem" }} />
           ) : (
             <div
-              sx={{ textAlign: "center", width: "100%", fontStyle: "italic" }}
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexWrap: "wrap",
+              }}
             >
-              {" "}
-              No notes
+              {notes.length > 0 ? (
+                sortNotesByDateTitle(notes).map((note, i) => {
+                  return (
+                    <div
+                      sx={{ width: isMobile ? "100%" : "33%", p: 2 }}
+                      key={i}
+                    >
+                      <Link
+                        key={note._id}
+                        href="/note/[id]"
+                        as={`/note/${note._id}`}
+                      >
+                        <div
+                          sx={{ variant: "containers.card", cursor: "pointer" }}
+                        >
+                          <strong>{formatNoteTitle(note.title)}</strong>
+                        </div>
+                      </Link>
+                    </div>
+                  );
+                })
+              ) : (
+                <div
+                  sx={{
+                    textAlign: "center",
+                    width: "100%",
+                    fontStyle: "italic",
+                  }}
+                >
+                  {" "}
+                  No notes
+                </div>
+              )}
             </div>
           )}
-        </div>
+        </>
+      ) : (
+        <MustBeLoggedIn />
       )}
     </div>
   );

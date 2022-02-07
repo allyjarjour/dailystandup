@@ -6,8 +6,12 @@ import { ThemeProvider } from "theme-ui";
 import theme from "../theme";
 import Nav from "../src/components/Nav";
 import Head from "next/head";
+import { SessionProvider } from "next-auth/react";
 
-export default function App({ Component, pageProps }) {
+export default function App({
+  Component,
+  pageProps: { session, ...pageProps },
+}) {
   return (
     <ThemeProvider theme={theme}>
       <Head>
@@ -18,8 +22,10 @@ export default function App({ Component, pageProps }) {
         />
       </Head>
       <div className="daily-standup-app">
-        <Nav />
-        <Component {...pageProps} />
+        <SessionProvider session={session}>
+          <Nav />
+          <Component {...pageProps} />
+        </SessionProvider>
       </div>
     </ThemeProvider>
   );

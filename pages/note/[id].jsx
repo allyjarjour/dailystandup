@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { deleteNote, updateTasks, getNote } from "../../src/requests/requests";
 import SummaryTasks from "../../src/components/SummaryTasks";
 import { formatNoteTitle } from "../../src/util";
+import { useSession } from "next-auth/react";
 
 export default function Note() {
   const router = useRouter();
@@ -11,6 +12,9 @@ export default function Note() {
   const [value, setValue] = React.useState("");
   const noteTitle = note.title && formatNoteTitle(note.title);
   const { tasks } = note;
+  const { data: session, status } = useSession();
+  const isLoggedIn = status === "authenticated";
+  console.log(isLoggedIn);
 
   const refreshNote = async () => {
     const {
@@ -21,7 +25,7 @@ export default function Note() {
   };
 
   React.useEffect(() => {
-    refreshNote();
+    isLoggedIn ? refreshNote() : router.push("/");
   }, []);
 
   const handleDelete = () => {

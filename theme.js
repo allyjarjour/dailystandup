@@ -30,12 +30,12 @@ const theme = {
       fontFamily: "inherit",
     },
   },
+  header: {
+    width: "100vw",
+    bg: "secondary",
+  },
   nav: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
     textAlign: "center",
-    height: "100%",
     color: "muted",
     fontSize: "2rem",
     cursor: "pointer",
@@ -51,6 +51,7 @@ const theme = {
     page: {
       width: "80%",
       mx: "auto",
+      marginTop: "75px",
     },
     note: {
       display: "flex",
