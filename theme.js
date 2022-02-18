@@ -62,6 +62,10 @@ const theme = {
       flexDirection: "column",
     },
   },
+  spinner: {
+    width: "100%",
+    mt: "2rem",
+  },
   styles: {
     ...future.styles,
   },
