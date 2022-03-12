@@ -5,26 +5,33 @@ const handler = nc();
 
 handler.use(middleware);
 
-handler.get(async (req, res) => {
-  try {
-    let doc = await req.db.collection("allNotes").find().toArray();
-    res.json({ data: doc });
-  } catch (e) {
-    res.status(500).json({ message: e.message });
-  }
-});
-
 handler.post(async (req, res) => {
   const noteToSave = {
-    ...req.body,
+    ...req.body.note,
   };
 
   try {
-    let note = await req.db.collection("allNotes").insertOne(noteToSave);
-    res.json({ _id: note.insertedId });
+    let note = await req.db
+      .collection("allNotesByUser")
+      .findOne({ _id: ObjectId(req.body.id) })
+      .notes.insertOne(noteToSave);
+    res.json({ note });
   } catch (e) {
     res.status(500).json({ message: e.message });
   }
 });
+
+// new one here
+// handler.post(async (req, res) => {
+//   const {
+//     body: { email },
+//   } = req;
+//   try {
+//     let doc = await req.db.collection("allNotesByUser").findOne({ email });
+//     res.json({ data: doc });
+//   } catch (e) {
+//     res.status(500).json({ message: e.message });
+//   }
+// });
 
 export default handler;

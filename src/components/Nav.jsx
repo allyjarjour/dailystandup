@@ -10,17 +10,6 @@ const Nav = () => {
   const { data: session, status } = useSession();
   const isLoggedIn = status === "authenticated";
 
-  React.useEffect(() => {
-    isLoggedIn &&
-      session?.accessToken &&
-      fetch("https://api.github.com/user/emails", {
-        headers: new Headers({
-          Accept: "application/vnd.github.v3+json",
-          Authorization: `token ${session?.accessToken}`,
-        }),
-      });
-  }, [status]);
-
   return isLoggedIn ? (
     <div sx={{ position: "fixed", top: 0, zIndex: 10, overflow: "hidden" }}>
       <header

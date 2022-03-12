@@ -7,26 +7,42 @@ import theme from "../theme";
 import Nav from "../src/components/Nav";
 import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
+import AppFrame from "../src/components/AppFrame";
+import { ReactQueryDevtools } from "react-query/devtools";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "react-query";
+
+const queryClient = new QueryClient();
 
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }) {
   return (
-    <ThemeProvider theme={theme}>
-      <Head>
-        <title>Daily Standup</title>
-        <link
-          rel="shortcut icon"
-          href="https://static.thenounproject.com/png/79533-200.png"
-        />
-      </Head>
-      <div className="daily-standup-app">
-        <SessionProvider session={session}>
-          <Nav />
-          <Component {...pageProps} />
-        </SessionProvider>
-      </div>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <Head>
+          <title>Daily Standup</title>
+          <link
+            rel="shortcut icon"
+            href="https://static.thenounproject.com/png/79533-200.png"
+          />
+        </Head>
+        <div className="daily-standup-app">
+          <SessionProvider session={session}>
+            <Nav />
+            <AppFrame>
+              <Component {...pageProps} />
+            </AppFrame>
+          </SessionProvider>
+        </div>
+      </ThemeProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }

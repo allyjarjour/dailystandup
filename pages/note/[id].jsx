@@ -5,6 +5,7 @@ import { deleteNote, updateTasks, getNote } from "../../src/requests/requests";
 import SummaryTasks from "../../src/components/SummaryTasks";
 import { formatNoteTitle } from "../../src/util";
 import { useSession } from "next-auth/react";
+import { useQueryClient } from "react-query";
 
 export default function Note() {
   const router = useRouter();
@@ -12,15 +13,17 @@ export default function Note() {
   const [value, setValue] = React.useState("");
   const noteTitle = note.title && formatNoteTitle(note.title);
   const { tasks } = note;
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const isLoggedIn = status === "authenticated";
-  console.log(isLoggedIn);
+  const userData = useQueryClient()?.getQueryData("userData");
+  const userId = userData?._id;
 
   const refreshNote = async () => {
     const {
       query: { id },
     } = router;
-    const data = await getNote(id);
+    const data = await getNote(id, userId);
+    console.log(data);
     setNote(data);
   };
 

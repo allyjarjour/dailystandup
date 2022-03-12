@@ -1,20 +1,21 @@
 const isFunction = (func) => typeof func === "function";
 
-export const getNotes = async () => {
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/note/`);
-    var { data } = await res.json();
-  } catch (e) {
-    console.error(e);
-  } finally {
-    return { notes: data ?? [] };
-  }
+export const getUserData = async (email) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/notes`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  });
+  var { data } = await res.json();
+  return data;
 };
 
-export const getNote = async (id, onSuccess) => {
+export const getNote = async (noteId, userId, onSuccess) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/note/${id}`
+      `${process.env.NEXT_PUBLIC_API_URL}/api/user/${userId}/note/${noteId}`
     );
     var { data } = await res.json();
     isFunction(onSuccess) && onSuccess();
@@ -25,23 +26,25 @@ export const getNote = async (id, onSuccess) => {
   }
 };
 
-export const submitNote = async (value, onSuccess) => {
+export const submitNote = async (value, id, onSuccess) => {
+  console.log(id);
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/note`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ title: value, tasks: [] }),
+      body: JSON.stringify({ note: { title: value, tasks: [] }, id }),
     });
     const data = await res.json();
-    const id = data._id;
-    isFunction(onSuccess) && onSuccess(id);
+    const noteId = data._id;
+    isFunction(onSuccess) && onSuccess(noteId);
   } catch (e) {
     console.error("Error:", e);
   }
 };
 
+//update with new path
 export const updateTasks = async (tasks, id, onSuccess) => {
   try {
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/note/${id}/tasks`, {
@@ -57,6 +60,7 @@ export const updateTasks = async (tasks, id, onSuccess) => {
   }
 };
 
+// update w/ new path
 export const deleteNote = async (id, onSuccess) => {
   try {
     await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/note/${id}`, {
@@ -69,4 +73,17 @@ export const deleteNote = async (id, onSuccess) => {
   } catch (e) {
     console.error(e);
   }
+};
+
+export const getUserEmail = async (accessToken) => {
+  if (!accessToken) return {};
+  const res = await fetch("https://api.github.com/user/emails", {
+    headers: new Headers({
+      Accept: "application/vnd.github.v3+json",
+      Authorization: `token ${accessToken}`,
+    }),
+  });
+  const emails = await res.json();
+  const data = emails?.find((e) => e.primary);
+  return data;
 };
