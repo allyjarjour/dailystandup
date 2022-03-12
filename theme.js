@@ -26,7 +26,7 @@ const theme = {
     },
   },
   forms: {
-    input: {
+    textarea: {
       fontFamily: "inherit",
     },
   },

@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, Button, Input } from "theme-ui";
+import { jsx, Button, Input, Textarea } from "theme-ui";
 import { useRouter } from "next/router";
 import { deleteNote, updateTasks, getNote } from "../../src/requests/requests";
 import SummaryTasks from "../../src/components/SummaryTasks";
@@ -44,10 +44,12 @@ export default function Note() {
         <div sx={{ variant: "containers.card", mt: 20, p: 30 }}>
           <h1>{noteTitle} </h1>
           <div sx={{ display: "flex", mb: "20px" }}>
-            <Input onChange={handleChange} value={value} />
-            <Button sx={{ ml: "5px" }} onClick={handleAddTask}>
-              +
-            </Button>
+            <Textarea onChange={handleChange} value={value} rows={1} />
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <Button sx={{ ml: "5px" }} onClick={handleAddTask}>
+                +
+              </Button>
+            </div>
           </div>
           {tasks && (
             <SummaryTasks
