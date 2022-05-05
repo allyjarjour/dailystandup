@@ -27,7 +27,6 @@ export const getNote = async (noteId, userId, onSuccess) => {
 };
 
 export const submitNote = async (value, id, onSuccess) => {
-  console.log(id);
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/note`, {
       method: "POST",

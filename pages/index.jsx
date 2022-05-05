@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, Button, Spinner } from "theme-ui";
+import { jsx, Button } from "theme-ui";
 import Link from "next/link";
 import { getUserData, submitNote } from "../src/requests/requests";
 import DatePicker from "react-datepicker";
@@ -8,7 +8,7 @@ import { formatNoteTitle, sortNotesByDateTitle } from "../src/util";
 import { isMobile } from "react-device-detect";
 import { useQuery, useQueryClient } from "react-query";
 
-const Notes = () => {
+const Notes = ({ notes }) => {
   const [value, setValue] = React.useState("");
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -62,14 +62,14 @@ const Notes = () => {
             flexWrap: "wrap",
           }}
         >
-          {data?.notes?.length > 0 ? (
-            sortNotesByDateTitle(data.notes).map((note, i) => {
+          {notes?.length > 0 ? (
+            sortNotesByDateTitle(notes).map((note, i) => {
               return (
                 <div sx={{ width: isMobile ? "100%" : "33%", p: 2 }} key={i}>
                   <Link
                     key={note._id}
-                    href="/note/[id]"
-                    as={`/note/${note._id}`}
+                    href="/notes/[id]"
+                    as={`/notes/${note._id}`}
                   >
                     <div sx={{ variant: "containers.card", cursor: "pointer" }}>
                       <strong>{formatNoteTitle(note.title)}</strong>
@@ -80,11 +80,7 @@ const Notes = () => {
             })
           ) : (
             <div
-              sx={{
-                textAlign: "center",
-                width: "100%",
-                fontStyle: "italic",
-              }}
+              sx={{ textAlign: "center", width: "100%", fontStyle: "italic" }}
             >
               {" "}
               No notes
@@ -94,6 +90,14 @@ const Notes = () => {
       )}
     </>
   );
+};
+
+export const getServerSideProps = async () => {
+  const { notes } = await getNotes();
+
+  return {
+    props: { notes: notes ?? {} },
+  };
 };
 
 export default Notes;

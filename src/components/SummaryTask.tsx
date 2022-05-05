@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Input, Flex } from "theme-ui";
+import { Button, Flex, Textarea } from "theme-ui";
 
 type SummaryTaskProps = {
   task: string;
@@ -40,7 +40,7 @@ const SummaryTask = ({
       }}
     >
       {isEditing ? (
-        <Input value={newTask} onChange={onInputChange} />
+        <Textarea value={newTask} onChange={onInputChange} rows={1} />
       ) : (
         <p>{task}</p>
       )}
