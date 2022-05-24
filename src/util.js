@@ -8,5 +8,5 @@ const timeFormatptions = {
 export const formatNoteTitle = (title) =>
   new Date(title).toLocaleString("en-US", timeFormatptions);
 
-export const sortNotesByDateTitle = (notes) =>
+export const sortNotesByDateTitle = (notes = []) =>
   notes.sort((a, b) => new Date(b.title) - new Date(a.title));

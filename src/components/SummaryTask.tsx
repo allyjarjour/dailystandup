@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Input, Flex, Textarea } from "theme-ui";
+import { Button, Flex, Textarea } from "theme-ui";
 
 type SummaryTaskProps = {
   task: string;
