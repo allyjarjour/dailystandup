@@ -1,10 +1,10 @@
 import React from "react";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { Spinner } from "theme-ui";
 import MustBeLoggedInMessage from "./MustBeLoggedInMessage";
 import { Box } from "theme-ui";
-import { getUserEmail } from "../requests/requests";
-import { useQuery, QueryClient } from "react-query";
+import { getUserData, getUserEmail } from "../requests/requests";
+import { useQuery } from "react-query";
 
 export default function AppFrame({
   children,
@@ -12,19 +12,27 @@ export default function AppFrame({
   children: JSX.Element;
 }): JSX.Element {
   const { data: session, status } = useSession();
-  const { data: emailData } = useQuery(
+  const { isLoading, data: emailData } = useQuery(
     "userEmail",
     () => getUserEmail(session.accessToken),
     {
       enabled: !!session?.accessToken,
+      onError: signOut,
+    }
+  );
+  const email = emailData?.email;
+  const { isLoading: areNotesLoading } = useQuery(
+    "userData",
+    () => getUserData(email),
+    {
+      enabled: !!email,
     }
   );
 
-  React.useEffect(() => {
-    !emailData?.email && console.log("signOut");
-  }, [emailData?.email]);
-
   const getAppFrameContent = () => {
+    if (isLoading || areNotesLoading) {
+      return <Spinner sx={{ variant: "spinner" }} />;
+    }
     switch (status) {
       case "loading":
         return <Spinner sx={{ variant: "spinner" }} />;

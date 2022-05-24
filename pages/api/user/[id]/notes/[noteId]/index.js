@@ -1,6 +1,6 @@
 import { ObjectId } from "bson";
 import nc from "next-connect";
-import middleware from "../../../../../middleware/database";
+import middleware from "../../../../../../middleware/database";
 
 const handler = nc();
 
@@ -23,15 +23,21 @@ handler
   })
   .delete(async (req, res) => {
     const {
-      query: { id },
+      query: { id, noteId },
     } = req;
     try {
-      await req.db.collection("allNotes").remove({ _id: ObjectId(id) });
+      await req.db.collection("allNotesByUser").update(
+        { _id: ObjectId(id) },
+        {
+          $pull: { notes: { _id: ObjectId(noteId) } },
+        },
+        false,
+        true
+      );
       res.json({ data: id });
     } catch (e) {
       res.status(404);
       res.end();
-      return;
     }
   });
 

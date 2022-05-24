@@ -9,13 +9,7 @@ import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
 import AppFrame from "../src/components/AppFrame";
 import { ReactQueryDevtools } from "react-query/devtools";
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from "react-query";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient();
 

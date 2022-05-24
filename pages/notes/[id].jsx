@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx, Button, Input, Textarea } from "theme-ui";
+import { jsx, Button, Textarea } from "theme-ui";
 import { useRouter } from "next/router";
 import { deleteNote, updateTasks, getNote } from "../../src/requests/requests";
 import SummaryTasks from "../../src/components/SummaryTasks";
@@ -15,7 +15,8 @@ export default function Note() {
   const { tasks } = note;
   const { status } = useSession();
   const isLoggedIn = status === "authenticated";
-  const userData = useQueryClient()?.getQueryData("userData");
+  const queryClient = useQueryClient();
+  const userData = queryClient.getQueryData("userData");
   const userId = userData?._id;
 
   const refreshNote = async () => {
@@ -23,7 +24,6 @@ export default function Note() {
       query: { id },
     } = router;
     const data = await getNote(id, userId);
-    console.log(data);
     setNote(data);
   };
 
@@ -32,12 +32,15 @@ export default function Note() {
   }, []);
 
   const handleDelete = () => {
-    const onSuccess = () => router.push("/");
-    deleteNote(note._id, onSuccess);
+    const onSuccess = async () => {
+      await queryClient.refetchQueries(["userData"], { active: true });
+      router.push("/");
+    };
+    deleteNote(note._id, userId, onSuccess);
   };
 
   const handleAddTask = () => {
-    updateTasks([...tasks, value], note._id, refreshNote);
+    updateTasks([...tasks, value], note._id, userId, refreshNote);
     setValue("");
   };
 

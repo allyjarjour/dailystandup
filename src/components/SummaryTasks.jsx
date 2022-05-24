@@ -1,11 +1,15 @@
+import { useQueryClient } from "react-query";
 import { updateTasks } from "../requests/requests";
 import SummaryTask from "./SummaryTask";
 
 const SummaryTasks = ({ tasks, noteId, refreshNote }) => {
+  const userData = useQueryClient()?.getQueryData("userData");
+  const userId = userData?._id;
+
   const handleDelete = (i) => {
     const tasksToSave = [...tasks];
     tasksToSave.splice(i, 1);
-    updateTasks(tasksToSave, noteId, refreshNote);
+    updateTasks(tasksToSave, noteId, userId, refreshNote);
   };
 
   const handleEdit = (i, newTask, onSuccess) => {
@@ -15,7 +19,7 @@ const SummaryTasks = ({ tasks, noteId, refreshNote }) => {
       refreshNote();
       typeof onSuccess === "function" && onSuccess();
     };
-    updateTasks(tasksToSave, noteId, onSuccessEvents);
+    updateTasks(tasksToSave, noteId, userId, onSuccessEvents);
   };
 
   return (
