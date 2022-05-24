@@ -62,7 +62,6 @@ export const updateTasks = async (tasks, noteId, userId, onSuccess) => {
   }
 };
 
-// update w/ new path
 export const deleteNote = async (id, userId, onSuccess) => {
   try {
     await fetch(
