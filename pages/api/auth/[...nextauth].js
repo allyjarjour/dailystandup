@@ -25,8 +25,10 @@ export default NextAuth({
 
       return session;
     },
-    async redirect() {
-      return process.env.NEXTAUTH_URL;
+    callbacks: {
+      redirect: async (url) => {
+        return Promise.resolve(url);
+      },
     },
   },
 
