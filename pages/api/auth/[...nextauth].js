@@ -25,6 +25,9 @@ export default NextAuth({
 
       return session;
     },
+    async redirect() {
+      return process.env.NEXTAUTH_URL;
+    },
   },
 
   secret: process.env.SECRET,

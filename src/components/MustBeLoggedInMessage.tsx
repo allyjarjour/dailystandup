@@ -16,12 +16,7 @@ export default function MustBeLoggedInMessage() {
           Daily Standup
         </Text>
         <Image src="https://static.thenounproject.com/png/79533-200.png" />
-        <Button
-          mt={2}
-          onClick={() =>
-            signIn(undefined, { callbackUrl: process.env.NEXTAUTH_URL })
-          }
-        >
+        <Button mt={2} onClick={signIn}>
           Sign in with GitHub
         </Button>
       </Flex>
