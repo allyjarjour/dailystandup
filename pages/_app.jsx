@@ -21,7 +21,7 @@ export default function App({
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <Head>
-          <title>Daily Standup</title>
+          <title>Daily Standup!</title>
           <link
             rel="shortcut icon"
             href="https://static.thenounproject.com/png/79533-200.png"
