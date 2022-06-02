@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Text, Flex, Button } from "theme-ui";
+import { Image, Flex, Button } from "theme-ui";
 import { signIn } from "next-auth/react";
 
 export default function MustBeLoggedInMessage() {
