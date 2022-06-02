@@ -21,11 +21,8 @@ export default function App({
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={theme}>
         <Head>
-          <title>Daily Standup</title>
-          <link
-            rel="shortcut icon"
-            href="https://static.thenounproject.com/png/79533-200.png"
-          />
+          <title>Standup Summary</title>
+          <link rel="Standup Summary icon" href="./standup_summary_2.png" />
         </Head>
         <div className="daily-standup-app">
           <SessionProvider session={session}>
