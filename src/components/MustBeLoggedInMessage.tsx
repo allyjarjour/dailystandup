@@ -6,18 +6,9 @@ export default function MustBeLoggedInMessage() {
   return (
     <Flex sx={{ justifyContent: "center" }}>
       <Flex sx={{ flexDirection: "column" }}>
-        <Text
-          sx={{
-            fontSize: 4,
-            fontWeight: "bold",
-            textAlign: "center",
-          }}
-        >
-          Daily Standup
-        </Text>
-        <Image src="https://static.thenounproject.com/png/79533-200.png" />
-        <Button mt={2} onClick={signIn}>
-          Sign in with GitHub
+        <Image src="./standup_summary.png" />
+        <Button mt={2} onClick={signIn} width="200" sx={{ margin: "0 auto" }}>
+          Sign In
         </Button>
       </Flex>
     </Flex>
